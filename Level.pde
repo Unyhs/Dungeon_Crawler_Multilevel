@@ -7,8 +7,10 @@ public class Level{
     private int levelNo; // The level number
     private int noOfDungeons;
     private ArrayList<Room> RoomsAll; // List of Rooms in the level
+    ArrayList<Room> dungeons = new ArrayList<Room>(); // List to store Rooms containing the coordinates
     private boolean isLevelCompleted; // Flag to check if the level is completed
     private Door exitDoor; // Door object for the level
+    private ArrayList <Enemy> enemies=new ArrayList<>();
     
     // Constructor to initialize the level with a level number
     public Level(int levelNo) 
@@ -19,7 +21,15 @@ public class Level{
         isLevelCompleted = false; // Initialize the level completion status to false
     }
 
-    public Door getExitDoor() {
+    public ArrayList<Enemy> getEnemies(){
+    return enemies;
+    }
+
+    public void setExitDoor(){
+        exitDoor=new Door(dungeons.get(noOfDungeons-1).centreX, dungeons.get(noOfDungeons-1).centreY, 50,50); // Create a new door object at the centre of the first dungeon
+    }
+
+    public Door getExitDoor() { 
         return exitDoor; // Return the exit door object
     }
 
@@ -35,40 +45,28 @@ public class Level{
         this.isLevelCompleted = isLevelCompleted;
     }
 
-    public ArrayList<Room> getRoom(int x, int y){
+    public Room getDungeon(int x, int y){
 
-        ArrayList<Room> rooms = new ArrayList<Room>(); // List to store Rooms containing the coordinates
-        for (Room r : RoomsAll) 
+        for (Room r : dungeons) 
         {
-            if (r.isInside(x, y)) rooms.add(r); // Check if the coordinates are inside the Room
+            if (r.isInside(x, y)) return r; // Check if the coordinates are inside the Room
         }
-        return rooms; // Return null if no Room contains the coordinates
+        return null; // Return null if no Room contains the coordinates
     }
 
-    public Room getFirstDungeon(){
+    public ArrayList<Room> getRooms(int x, int y){
 
-        int minx2=960;
-        int miny2=640;
+        ArrayList<Room> rooms1=new ArrayList<>();
 
-        ArrayList<Room> dungeons = new ArrayList<Room>(); // List to store Rooms containing the coordinates
-    
-        for(Room r: RoomsAll)
+        for (Room r : RoomsAll) 
         {
-            if(r.isDungeon) // Check if the Room is the first dungeon
-            {
-                dungeons.add(r); // Add the Room to the list of dungeons
-            }
+            if (r.isInside(x, y)) rooms1.add(r); // Check if the coordinates are inside the Room
         }
+        return rooms1; // Return null if no Room contains the coordinates
+    }
 
-        Collections.sort(dungeons, new Comparator<Room>() {
-            public int compare(Room r1, Room r2) {
-                return (r1.x2==r2.x2) ? r1.y2-r2.y2 : r1.x2-r2.x2; // Sort by x2 coordinate if y2 coordinates are equal
-            }
-        });
-
-        exitDoor=new Door(dungeons.get(noOfDungeons-1).centreX, dungeons.get(noOfDungeons-1).centreY, 50,50); // Create a new door object at the centre of the first dungeon
-
-        return dungeons.get(0); // Return null if no dungeon is found
+    public void createPlayer(){
+        game.setPlayer(dungeons.get(0).centreX,dungeons.get(0).centreY,20,dungeons.get(0)); // Create a new player instance
     }
 
     public void createDungeons() {
@@ -101,7 +99,52 @@ public class Level{
         }
 
         RoomsAll = new ArrayList<>(RoomsAllPQ); // Convert the priority queue to a list
-    }     
+
+        for(Room r: RoomsAll)
+        {
+            if(r.isDungeon) // Check if the Room is the first dungeon
+            {
+                dungeons.add(r); // Add the Room to the list of dungeons
+            }
+        }
+
+        Collections.sort(dungeons, new Comparator<Room>() {
+            public int compare(Room r1, Room r2) {
+                return (r1.x2==r2.x2) ? r1.y2-r2.y2 : r1.x2-r2.x2; // Sort by x2 coordinate if y2 coordinates are equal
+            }
+        });
+    }
+
+    public void createEnemies(){
+
+        int noOfEnemyRandom=library.levelConfig[levelNo][library.levelConfig_noOfEnemyRandom];
+
+        for(int i=0;i<noOfEnemyRandom;i++)
+        {
+            Room r=dungeons.get((int)random(0, noOfDungeons-1)); 
+            enemies.add(new EnemyRandom(r.x1+20,r.y1+20,20,r));
+        }
+
+        int noOfEnemyGuard=library.levelConfig[levelNo][library.levelConfig_noOfEnemyGuard];
+
+        for(int i=0;i<noOfEnemyGuard;i++)
+        {
+            Room r=dungeons.get((int)random(0, noOfDungeons-1)); 
+            enemies.add(new EnemyGuard(r.x1+20,r.y1+20,20,r));
+        }
+
+        int noOfEnemyChaser=library.levelConfig[levelNo][library.levelConfig_noOfEnemyChaser];
+
+        for(int i=0;i<noOfEnemyChaser;i++)
+        {
+            Room r=dungeons.get((int)random(0, noOfDungeons-1)); 
+            enemies.add(new EnemyChaser(r.x1+20,r.y1+20,20,r));
+        }
+    }
+
+    public void createDoor(){
+        setExitDoor();
+    }
 
     public void drawDungeons(){
         for (int i = 0; i <RoomsAll.size(); i++) 
@@ -116,6 +159,33 @@ public class Level{
 
     public void drawDoor(){
         exitDoor.draw(); // Draw the door on the screen
+    }
+
+    public void drawEnemies(){
+
+        for(Enemy e: enemies)
+        {
+            if (e instanceof EnemyRandom) {
+                // Handle EnemyRandom type
+                e.drawEntityWithoutEye();
+                e.move();
+            } else {
+                // Handle EnemmyGuard & Enemy Chaser type
+                e.drawEntityWithEye();
+            } 
+        }
+    }
+
+    public void drawPlayer(){
+        game.getPlayer().drawEntityWithEye(); // Draw the player on the screen
+    }
+
+    public void createLevel(){
+        createDungeons(); // Create dungeons for the current level
+        createPlayer();
+        createDoor();
+        createEnemies();
+
     }
 
     public void drawLevel(){
@@ -135,7 +205,9 @@ public class Level{
         text("Press P to pause/resume ", 480, 80); 
 
         drawDungeons(); // Draw the dungeons on the screen
+        drawPlayer();
         drawDoor(); // Draw the door on the screen
+        drawEnemies();
     }
 
 }

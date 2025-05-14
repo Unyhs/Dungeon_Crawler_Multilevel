@@ -32,8 +32,7 @@ public class EntityMovable
         return v;
     }
 
-    public void drawEntityWithEye(){
-        
+    public void drawEntityWithEye(){ 
         fill(fillColor);
         stroke(strokeColor);
         circle(centreX, centreY, diameter); // Draw the player as a circle
@@ -41,6 +40,13 @@ public class EntityMovable
         fill(eyeColor); // Set the eye color
         noStroke(); // Disable stroke for the eye
         circle(eyeX, eyeY, eyediameter); // Draw the eye as a circle
+    }
+
+     public void drawEntityWithoutEye(){
+        
+        fill(fillColor);
+        stroke(strokeColor);
+        circle(centreX, centreY, diameter); // Draw the player as a circle
     }
 
 }

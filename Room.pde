@@ -34,7 +34,7 @@ class Room
   {
     Room r1=this;
     Room r2,r3,r4;
-    int ranVal = (int) random(2, 5);  // Random value to divide the larger dimension
+    int ranVal = (int) random(3, 5);  // Random value to divide the larger dimension
     if (width > height) 
     {
         // If width (width) is larger, split along the x-axis (vertically)

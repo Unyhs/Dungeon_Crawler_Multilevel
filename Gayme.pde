@@ -39,6 +39,14 @@ public class Game{
         this.currStage = currStage;
     }
 
+    public void setPlayer(int x, int y, int dia, Room currRoom){
+        this.player=new Player(x,y,dia,currRoom); // Create a new player instance
+    }
+
+    public Player getPlayer(){
+        return player;
+    }
+
     public void initialize() {
         background(0, 102, 204);
 
@@ -106,7 +114,7 @@ public class Game{
 
             case PLAYING:
             {
-               if(level!=null && level.isLevelCompleted() && level.getLevelNo()==library.noOfLevels)
+               if((level!=null && level.isLevelCompleted() && level.getLevelNo()==library.noOfLevels) || (player!=null &&  player.isDead))
                {
                     terminate(); // Call terminate method to end the game
                     currStage=library.GameStage.END; // Change to END stage
@@ -117,17 +125,13 @@ public class Game{
                     {
                         level = new Level(currLevel); // Create a new level instance
                         currLevel = level.getLevelNo(); // Update the current level
-                        level.createDungeons(); // Create dungeons for the current level
-                        Room currRoom = level.getFirstDungeon(); // Get the current room
-                        player=new Player(currRoom.centreX,currRoom.centreY,20,currRoom); // Create a new player instance
-
+                        level.createLevel();
                     }else if (level.isLevelCompleted() && level.getLevelNo()<library.noOfLevels) 
                     {
                         isBetweenLevels=true;
                         currStage = library.GameStage.BETWEEN_LEVELS; // Change to BETWEEN_LEVELS stage
                     }
                     level.drawLevel(); // Draw the dungeons on the screen
-                    player.drawEntityWithEye(); // Draw the player on the screen
                }
                break;
             }
@@ -182,6 +186,7 @@ public class Game{
             {
                 currLevel=0; // Reset the level to 0
                 level=null; // Reset the level instance
+                player=null;
                 this.initialize(); // Reinitialize the game
                 currStage=library.GameStage.START; // Change to START stage
                 break;

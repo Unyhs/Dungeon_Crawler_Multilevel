@@ -1,13 +1,18 @@
 public class Player extends EntityMovable 
 {
+    protected boolean isDead;
+
     Player(int centreX,int centreY, int diameter,Room currentRoom)
     {
         super(centreX,centreY,diameter,currentRoom,color(255),color(128)); // Call the constructor of EntityMovable with player style colors
         this.setStep(5); // Set the step size for the player
+        this.isDead=false;
     }
 
     public void move(char direction) 
     {
+        isPlayerToEnemyCollisionDetected(game.getLevel().getEnemies());
+       
         if (direction == 'w')
         {
             if(game.getLevel().getExitDoor().isPlayerInExit(this.centreX-diameter/2,
@@ -90,7 +95,7 @@ public class Player extends EntityMovable
 
     public void updateCurrentRoom() {
         // Check if the new position is within the bounds of the current Room
-        ArrayList<Room> rooms1=game.getLevel().getRoom(centreX,centreY); // Get the Rooms at the new position
+        ArrayList<Room> rooms1=game.getLevel().getRooms(centreX,centreY); // Get the Rooms at the new position
 
         for(Room r: rooms1)
         {
@@ -103,10 +108,23 @@ public class Player extends EntityMovable
     }
 
     public boolean checkMove(int x1, int y1, int x2, int y2){
-        ArrayList<Room> rooms1=game.getLevel().getRoom(x1, y1); // Check if the new coordinates are within the current Room
-        ArrayList<Room> rooms2=game.getLevel().getRoom(x2, y2); // Check if the new coordinates are within the current Room
+        ArrayList<Room> rooms1=game.getLevel().getRooms(x1, y1); // Check if the new coordinates are within the current Room
+        ArrayList<Room> rooms2=game.getLevel().getRooms(x2, y2); // Check if the new coordinates are within the current Room
 
         return (!rooms1.isEmpty() && !rooms2.isEmpty()) ? true : false; // Check if the new coordinates are within the same Room
+    }
+
+    public void isPlayerToEnemyCollisionDetected(ArrayList <Enemy> enemies){
+        for(Enemy e:enemies)
+        {
+            float distance = dist(e.centreX, e.centreY, this.centreX, this.centreY);
+
+            if(distance<=this.diameter+e.diameter) 
+            {
+                this.isDead=true;
+                break;
+            }
+        }
     }
 
     

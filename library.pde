@@ -17,16 +17,16 @@ public static class library {
     public static int [][] levelConfig=new int [][]
     {
         //no of Dungeons, no of Enemy Random, no of Enemy Guard, no of Enemy Chaser
-        {-1,0,0,0}, // level 0
-        {2,0,0,0}, // level 1
-        {2,0,0,0}, // level 2
-        {3,0,0,0}, // level 3
+        {1,0,0,0}, // level 0
+        {2,1,0,0}, // level 1
+        {2,0,1,0}, // level 2
+        {3,0,0,1}, // level 3
         {3,0,0,0}, // level 4
         {3,0,0,0}, // level 5
         {4,0,0,0}, // level 6
         {4,0,0,0}, // level 7
         {4,0,0,0}, // level 8
-        {4,0,0,0}, // level 9
+        {5,0,0,0}, // level 9
         {5,0,0,0}, // level 10
     };
 
