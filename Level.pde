@@ -104,6 +104,7 @@ public class Level{
         {
             if(r.isDungeon) // Check if the Room is the first dungeon
             {
+                r.createSubRoomForDungeon();
                 dungeons.add(r); // Add the Room to the list of dungeons
             }
         }
@@ -122,7 +123,7 @@ public class Level{
         for(int i=0;i<noOfEnemyRandom;i++)
         {
             Room r=dungeons.get((int)random(0, noOfDungeons-1)); 
-            enemies.add(new EnemyRandom(r.x1+20,r.y1+20,20,r));
+            enemies.add(new EnemyRandom(r));
         }
 
         int noOfEnemyGuard=library.levelConfig[levelNo][library.levelConfig_noOfEnemyGuard];
@@ -130,7 +131,7 @@ public class Level{
         for(int i=0;i<noOfEnemyGuard;i++)
         {
             Room r=dungeons.get((int)random(0, noOfDungeons-1)); 
-            enemies.add(new EnemyGuard(r.x1+20,r.y1+20,20,r));
+            enemies.add(new EnemyGuard(r));
         }
 
         int noOfEnemyChaser=library.levelConfig[levelNo][library.levelConfig_noOfEnemyChaser];
@@ -168,11 +169,13 @@ public class Level{
             if (e instanceof EnemyRandom) {
                 // Handle EnemyRandom type
                 e.drawEntityWithoutEye();
-                e.move();
+                
             } else {
                 // Handle EnemmyGuard & Enemy Chaser type
                 e.drawEntityWithEye();
             } 
+
+            e.move();
         }
     }
 

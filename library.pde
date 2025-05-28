@@ -9,6 +9,13 @@ public static class library {
         RESTART
     };
 
+    public static enum GuardState {
+        PATROLLING,
+        CHASING,
+        RETURNING,
+        PAUSED
+    };
+
     public static int levelConfig_noOfDungeons=0; // no of dungeons in the level
     public static int levelConfig_noOfEnemyRandom=1; // no of random enemies in the level
     public static int levelConfig_noOfEnemyGuard=2; // no of guard enemies in the level  
@@ -20,7 +27,7 @@ public static class library {
         {1,0,0,0}, // level 0
         {2,1,0,0}, // level 1
         {2,0,1,0}, // level 2
-        {3,0,0,1}, // level 3
+        {3,0,0,2}, // level 3
         {3,0,0,0}, // level 4
         {3,0,0,0}, // level 5
         {4,0,0,0}, // level 6

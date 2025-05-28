@@ -30,13 +30,20 @@ abstract public class Enemy extends EntityMovable
             {
                 float distance = dist(e.centreX, e.centreY, this.centreX, this.centreY);
 
-                if(distance<=this.diameter+e.diameter) 
+                if(distance<=this.diameter/2+e.diameter/2) 
                 {
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    public boolean isEnemytoPlayerCollisionDetected(){
+
+        Player p=game.getPlayer();
+        float distance = dist(p.centreX, p.centreY, this.centreX, this.centreY);
+        return (distance<=this.diameter/2+p.diameter/2) ? true:false;
     }
 
     public void dieOnBulletCollision(){

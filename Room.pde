@@ -1,16 +1,17 @@
 
 class Room
 {
+  int centreX;
+  int centreY; // The centre of the Room
+  int width; 
+  int height; // The width and height of the Room
   int x1;
   int y1; // The top left corner of the Room
   int x2;
   int y2; // The bottom right corner of the Room
   color fillColor; // The fill color of the Room
   boolean isDungeon; // Whether the Room is a dungeon or not
-  int centreX;
-  int centreY; // The centre of the Room
-  int width; 
-  int height; // The width and height of the Room
+  Room subRoom;
 
   Room(int x1, int y1, int x2, int y2, boolean isDungeon) {
     this.x1 = x1;
@@ -23,6 +24,10 @@ class Room
     centreX = x1 + width / 2;
     centreY = y1 + height / 2;
     fillColor = color(229, 255, 204); // Default fill color
+  }
+
+  public Room getSubRoom(){
+    return this.subRoom;
   }
 
   public boolean isInside(int x, int y) {
@@ -55,5 +60,13 @@ class Room
         r4= new Room(r2.centreX-15, r2.centreY, r3.centreX+15, r3.centreY,false); //tunnel vertical
       }
     return new Room[]{r2, r3, r4};
+  }
+
+  public void createSubRoomForDungeon(){
+      if(this.isDungeon)
+      {
+        this.subRoom=new Room(this.x1+50, this.y1+50, this.x2-50, this.y2-50, false);
+      }else
+      this.subRoom=null;
   }
 }
