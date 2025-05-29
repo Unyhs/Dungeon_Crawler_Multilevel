@@ -4,8 +4,7 @@ public class Player extends EntityMovable
 
     Player(int centreX,int centreY, int radius,Room currentRoom)
     {
-        super(centreX,centreY,radius,currentRoom,color(255),color(128)); // Call the constructor of EntityMovable with player style colors
-        this.setStep(5); // Set the step size for the player
+        super(centreX,centreY,radius,currentRoom,color(255),color(128),5); // Call the constructor of EntityMovable with player style colors
         this.isDead=false;
     }
 
@@ -31,18 +30,18 @@ public class Player extends EntityMovable
         if (direction == 'w')
         {
             if(game.getLevel().getExitDoor().isPlayerInExit(this.centreX-radius,
-                                this.centreY-radius-1*step,
+                                this.centreY-radius-1*(int)step,
                                 this.centreX+radius,
-                                this.centreY-radius-1*step))
+                                this.centreY-radius-1*(int)step))
             {
                 game.getLevel().setIsLevelCompleted(true); // Check if the player is in the exit door
             }
             else if(checkMove(this.centreX-radius,
-                                this.centreY-radius-1*step,
+                                this.centreY-radius-1*(int)step,
                                 this.centreX+radius,
-                                this.centreY-radius-1*step))
+                                this.centreY-radius-1*(int)step))
             {
-                centreY=centreY - step; // Move up
+                centreY=centreY - (int)step; // Move up
                 eyeX=centreX; // Move the eye up
                 eyeY=centreY-radius; // Move the eye up
             }
@@ -50,37 +49,37 @@ public class Player extends EntityMovable
         else if (direction == 's')
         {
             if(game.getLevel().getExitDoor().isPlayerInExit(this.centreX-radius,
-                                    this.centreY+radius+1*step,
+                                    this.centreY+radius+1*(int)step,
                                     this.centreX+radius,
-                                    this.centreY+radius+1*step))
+                                    this.centreY+radius+1*(int)step))
             {
                 game.getLevel().setIsLevelCompleted(true); // Check if the player is in the exit door
             }
             else if(checkMove(this.centreX-radius,
-                                    this.centreY+radius+1*step,
+                                    this.centreY+radius+1*(int)step,
                                     this.centreX+radius,
-                                    this.centreY+radius+1*step))
+                                    this.centreY+radius+1*(int)step))
             {
-                centreY=centreY + step; // Move down
+                centreY=centreY + (int)step; // Move down
                 eyeX=centreX; // Move the eye down
                 eyeY=centreY +radius; // Move the eye down
             }
         }    
         else if (direction == 'a')
         { 
-            if(game.getLevel().getExitDoor().isPlayerInExit(centreX-radius-1*step,
+            if(game.getLevel().getExitDoor().isPlayerInExit(centreX-radius-1*(int)step,
                                 centreY-radius,
-                                centreX-radius-1*step,
+                                centreX-radius-1*(int)step,
                                 centreY+radius))
             {
                 game.getLevel().setIsLevelCompleted(true); // Check if the player is in the exit door
             }
-            else if(checkMove(centreX-radius-1*step,
+            else if(checkMove(centreX-radius-1*(int)step,
                                 centreY-radius,
-                                centreX-radius-1*step,
+                                centreX-radius-1*(int)step,
                                 centreY+radius))
             {
-                centreX=centreX - step; // Move left
+                centreX=centreX - (int)step; // Move left
                 eyeX=centreX-radius; // Move the eye left
                 eyeY=centreY; // Move the eye left
             }
@@ -88,19 +87,19 @@ public class Player extends EntityMovable
         }
         else if (direction == 'd')
         {
-            if(game.getLevel().getExitDoor().isPlayerInExit(centreX+radius+1*step,
+            if(game.getLevel().getExitDoor().isPlayerInExit(centreX+radius+1*(int)step,
                                 centreY-radius,
-                                centreX+radius+1*step,
+                                centreX+radius+1*(int)step,
                                 centreY+radius))
             {
                 game.getLevel().setIsLevelCompleted(true); // Check if the player is in the exit door
             }
-            else if(checkMove(centreX+radius+1*step,
+            else if(checkMove(centreX+radius+1*(int)step,
                                 centreY-radius,
-                                centreX+radius+1*step,
+                                centreX+radius+1*(int)step,
                                 centreY+radius))
             {
-                centreX=centreX + step; // Move right
+                centreX=centreX + (int)step; // Move right
                 eyeX=centreX+radius; // Move the eye left
                 eyeY=centreY; // Move the eye left
             }

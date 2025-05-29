@@ -1,7 +1,7 @@
 public class EntityMovable 
 {
     protected int centreX,centreY;
-    protected int step;
+    protected double step;
     protected int radius;
     protected color fillColor,strokeColor;
     protected int eyeX,eyeY;
@@ -10,20 +10,20 @@ public class EntityMovable
     protected Room currentRoom; // The current Room of the Entity
 
 
-    public EntityMovable(int centreX,int centreY, int radius, Room currentRoom, color fillColor, color strokeColor) {
+    public EntityMovable(int centreX,int centreY, int radius, Room currentRoom, color fillColor, color strokeColor, double step) {
         this.centreX = centreX;
         this.centreY = centreY;
         this.radius = radius;
         this.currentRoom = currentRoom; // Set the current Room of the Entity
         this.fillColor = fillColor;
         this.strokeColor = strokeColor;
-        this.step = 5; // Default step size
+        this.step = step; // Default step size
         this.eyeX=centreX+radius; // Default eye X position
         this.eyeY=centreY;
         this.eyeRadius = 3; // Default eye radius
     }
 
-    public void setStep(int step) {
+    public void setStep(double step) {
         this.step = step;
     }   
 

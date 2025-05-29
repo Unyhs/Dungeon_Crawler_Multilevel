@@ -6,8 +6,6 @@ public class EnemyGuard extends Enemy{
     //on Player to Enemy Collision - Player dies
     //on enemy to enemy collision - it pauses till path is clear
 
-    private double velocityX;
-    private double velocityY;
     private Room subRoom;
     private int originX;
     private int originY;
@@ -16,11 +14,16 @@ public class EnemyGuard extends Enemy{
 
     EnemyGuard(Room currentRoom)
     {
-        super(currentRoom.getSubRoom().x1, currentRoom.getSubRoom().y1,10,currentRoom,color(20),color(128)); // Call the constructor of EntityMovable with respective style colors
-        this.setStep(1); // Set the step size for the entity
+        super(currentRoom.getSubRoom().x1, currentRoom.getSubRoom().y1,10,currentRoom,color(20),color(128), 1.5, 2.5); // Call the constructor of EntityMovable with respective style colors
         this.subRoom=currentRoom.getSubRoom();
         this.originX=subRoom.x1;
         this.originY=subRoom.y1;
+        initializeRandomVelocity();
+    }
+
+    public void initializeRandomVelocity(){
+        velocityX=step*0;
+        velocityY=step*0;
     }
  
     public void move()
@@ -120,22 +123,6 @@ public class EnemyGuard extends Enemy{
         }
     }
 
-    private void chasePlayer()
-    {
-        Player p=game.getPlayer();
-        float dx = p.centreX - centreX;
-        float dy = p.centreY - centreY;
-
-        // Normalize the direction vector
-        PVector direction = new PVector(dx, dy);
-        direction.normalize();
-
-        // Set velocity based on the direction and speed (step)
-        velocityX = direction.x * step*2;
-        velocityY = direction.y * step*2;
-
-    }
-
     private void goToOrigin()
     {
         Player p=game.getPlayer();
@@ -147,20 +134,6 @@ public class EnemyGuard extends Enemy{
         // Set velocity based on the direction and speed (step)
         velocityX = direction.x * step;
         velocityY = direction.y * step;
-    }
-
-    public boolean isPlayerinFOV(){
-
-        Player p=game.getPlayer();
-
-        if(p.currentRoom!=this.currentRoom) return false;
-        PVector enemyVector=this.getEntityVisionVector();
-        PVector enemyToPlayerVector=new PVector(p.centreX-this.centreX,p.centreY-this.centreY);
-
-        float angleInRadians = PVector.angleBetween(enemyVector, enemyToPlayerVector);
-        float angleInDegrees=degrees(angleInRadians);
-
-        return (angleInDegrees<=30)? true : false; //120 degrees FOV
     }
 
 }
