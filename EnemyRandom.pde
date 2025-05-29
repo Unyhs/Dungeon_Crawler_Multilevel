@@ -5,7 +5,7 @@ public class EnemyRandom extends Enemy{
 
     EnemyRandom(Room currentRoom)
     {
-        super(currentRoom.x1+50, currentRoom.y1+50,20,currentRoom,color(40),color(128)); // Call the constructor of EntityMovable with respective style colors
+        super(currentRoom.x1+50, currentRoom.y1+50,10,currentRoom,color(40),color(128)); // Call the constructor of EntityMovable with respective style colors
         this.setStep(2); // Set the step size for the entity
         initializeRandomVelocity();
     }
@@ -22,7 +22,6 @@ public class EnemyRandom extends Enemy{
 
     public void move()
     {
-        int rad=diameter/2;
         if(isEnemytoPlayerCollisionDetected()) 
         {
             game.getPlayer().setIsDead(true);
@@ -34,13 +33,13 @@ public class EnemyRandom extends Enemy{
         else 
         {
         double random=0.2;
-            if(centreX-rad+velocityX < currentRoom.x1 || centreX + rad+velocityX >currentRoom.x2)
+            if(centreX-radius+velocityX < currentRoom.x1 || centreX + radius+velocityX >currentRoom.x2)
             {
                 velocityX = -velocityX;
                 velocityY+= random;
             }
 
-            if(centreY-rad+velocityY < currentRoom.y1 || centreY + rad+velocityY >currentRoom.y2)
+            if(centreY-radius+velocityY < currentRoom.y1 || centreY + radius+velocityY >currentRoom.y2)
             {
                 velocityY = -velocityY;
                 velocityX+= random;

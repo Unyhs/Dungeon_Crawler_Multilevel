@@ -39,8 +39,12 @@ public class Game{
         this.currStage = currStage;
     }
 
-    public void setPlayer(int x, int y, int dia, Room currRoom){
-        this.player=new Player(x,y,dia,currRoom); // Create a new player instance
+    public void setPlayer(){
+        Room currentRoom=level.getPlayerRoom();
+        if(player==null)
+            this.player=new Player(currentRoom.centreX,currentRoom.centreY,10,currentRoom); // Create a new player instance
+        else
+            player.updatePlayer(currentRoom.centreX,currentRoom.centreY, currentRoom); // Update the player instance with new coordinates and diameter
     }
 
     public Player getPlayer(){
@@ -126,6 +130,7 @@ public class Game{
                         level = new Level(currLevel); // Create a new level instance
                         currLevel = level.getLevelNo(); // Update the current level
                         level.createLevel();
+                        setPlayer();
                     }else if (level.isLevelCompleted() && level.getLevelNo()<library.noOfLevels) 
                     {
                         isBetweenLevels=true;

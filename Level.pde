@@ -22,7 +22,7 @@ public class Level{
     }
 
     public ArrayList<Enemy> getEnemies(){
-    return enemies;
+        return enemies;
     }
 
     public void setExitDoor(){
@@ -65,8 +65,8 @@ public class Level{
         return rooms1; // Return null if no Room contains the coordinates
     }
 
-    public void createPlayer(){
-        game.setPlayer(dungeons.get(0).centreX,dungeons.get(0).centreY,20,dungeons.get(0)); // Create a new player instance
+    public Room getPlayerRoom() {
+        return dungeons.get(0); // Return the Room where the player is currently located
     }
 
     public void createDungeons() {
@@ -139,7 +139,7 @@ public class Level{
         for(int i=0;i<noOfEnemyChaser;i++)
         {
             Room r=dungeons.get((int)random(0, noOfDungeons-1)); 
-            enemies.add(new EnemyChaser(r.x1+20,r.y1+20,20,r));
+            enemies.add(new EnemyChaser(r));
         }
     }
 
@@ -185,10 +185,8 @@ public class Level{
 
     public void createLevel(){
         createDungeons(); // Create dungeons for the current level
-        createPlayer();
         createDoor();
         createEnemies();
-
     }
 
     public void drawLevel(){

@@ -6,18 +6,17 @@ public class EnemyGuard extends Enemy{
     //on Player to Enemy Collision - Player dies
     //on enemy to enemy collision - it pauses till path is clear
 
-
     private double velocityX;
     private double velocityY;
     private Room subRoom;
     private int originX;
     private int originY;
     private library.GuardState currentState=library.GuardState.PATROLLING;
-    private int eyeOffset=diameter/2;
+    private int eyeOffset=radius;
 
     EnemyGuard(Room currentRoom)
     {
-        super(currentRoom.getSubRoom().x1, currentRoom.getSubRoom().y1,20,currentRoom,color(20),color(128)); // Call the constructor of EntityMovable with respective style colors
+        super(currentRoom.getSubRoom().x1, currentRoom.getSubRoom().y1,10,currentRoom,color(20),color(128)); // Call the constructor of EntityMovable with respective style colors
         this.setStep(1); // Set the step size for the entity
         this.subRoom=currentRoom.getSubRoom();
         this.originX=subRoom.x1;
@@ -53,19 +52,23 @@ public class EnemyGuard extends Enemy{
                 
                 case CHASING:
                     {   
+                    
                         chasePlayer();
+                        Player p=game.getPlayer();
                         //chase player till Player leaves currentRoom
-                        if(!game.getPlayer().currentRoom.equals(this.currentRoom))
+                        if(!p.currentRoom.equals(this.currentRoom))
                         {
                             currentState=library.GuardState.RETURNING;
                         }
+                        
                         break;
                     }
 
                 case RETURNING:
                     {
                         //return to origin X and origin Y
-                        goToOrigin();                        
+                        goToOrigin();   
+                                            
                         if(centreX==originX && centreY==originY) currentState=library.GuardState.PATROLLING;
                         break;
                     }
@@ -82,42 +85,38 @@ public class EnemyGuard extends Enemy{
             }
         }
         centreX += velocityX;
-        eyeX+=velocityX;
         centreY += velocityY;  
-        eyeY+=velocityY;
+
+        PVector currentVelocity = new PVector((float) velocityX, (float) velocityY);
+        currentVelocity.normalize();
+        eyeX = (int) (centreX + currentVelocity.x * eyeOffset);
+        eyeY = (int) (centreY + currentVelocity.y * eyeOffset);
     }
 
     private void patrol(){
-
-
         if(centreX == subRoom.x2 && centreY==subRoom.y1)
         {
  
             velocityX=step*0;
             velocityY=step*1;
-            eyeX=centreX;
-            eyeY=centreY+diameter/2;
+            
         }else if(centreX == subRoom.x2 && centreY==subRoom.y2)
         {   
-  
             velocityX=step*-1;
             velocityY=step*0;
-            eyeX=centreX-diameter/2;
-            eyeY=centreY;
+           
         }else if(centreX == subRoom.x1 && centreY==subRoom.y2)
         {
       
             velocityX=step*0;
             velocityY=step*-1;
-            eyeX=centreX;
-            eyeY=centreY-diameter/2;
+            
         }else if(centreX == subRoom.x1 && centreY==subRoom.y1)
         {
      
             velocityX=step*1;
             velocityY=step*0;
-            eyeX=centreX+diameter/2;
-            eyeY=centreY;
+            
         }
     }
 

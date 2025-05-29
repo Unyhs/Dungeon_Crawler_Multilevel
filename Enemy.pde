@@ -7,9 +7,9 @@ abstract public class Enemy extends EntityMovable
     //d-right
     //s-down
 
-    Enemy(int centreX,int centreY, int diameter,Room currentRoom, color fillColor, color strokeColor)
+    Enemy(int centreX,int centreY, int radius,Room currentRoom, color fillColor, color strokeColor)
     {
-        super(centreX,centreY,diameter,currentRoom,fillColor,strokeColor); // Call the constructor of EntityMovable with player style colors
+        super(centreX,centreY,radius,currentRoom,fillColor,strokeColor); // Call the constructor of EntityMovable with player style colors
     }
 
     public char getCurrentDirection(){
@@ -30,7 +30,7 @@ abstract public class Enemy extends EntityMovable
             {
                 float distance = dist(e.centreX, e.centreY, this.centreX, this.centreY);
 
-                if(distance<=this.diameter/2+e.diameter/2) 
+                if(distance<=this.radius+e.radius) 
                 {
                     return true;
                 }
@@ -43,7 +43,7 @@ abstract public class Enemy extends EntityMovable
 
         Player p=game.getPlayer();
         float distance = dist(p.centreX, p.centreY, this.centreX, this.centreY);
-        return (distance<=this.diameter/2+p.diameter/2) ? true:false;
+        return (distance<=this.radius+p.radius) ? true:false;
     }
 
     public void dieOnBulletCollision(){

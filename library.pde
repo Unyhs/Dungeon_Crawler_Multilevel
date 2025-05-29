@@ -27,7 +27,7 @@ public static class library {
         {1,0,0,0}, // level 0
         {2,1,0,0}, // level 1
         {2,0,1,0}, // level 2
-        {3,0,0,2}, // level 3
+        {3,0,0,1}, // level 3
         {3,0,0,0}, // level 4
         {3,0,0,0}, // level 5
         {4,0,0,0}, // level 6
